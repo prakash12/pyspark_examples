@@ -1,6 +1,6 @@
 # Databricks notebook source
 import findspark
-from pyspark.sql.functions import regexp_replace, split, trim, size, col, array_size
+from pyspark.sql.functions import regexp_replace, split, trim, max, col, array_size, size, coalesce, lit
 
 findspark.init()
 from pyspark.shell import spark
@@ -24,10 +24,13 @@ cleanedDf = df_replace_string.withColumn("cleaned_array", split(col("replaced_st
 cleanedDf.show(truncate=False)
 size_df = cleanedDf.withColumn("size_a", array_size(col("cleaned_array")))
 size_df.show()
-max_value = size_df.select(max("size_a")).collect()[0][0]
+max_value = size_df.select(size(col("cleaned_array")).alias("size")).agg({"size": "max"}).collect()[0][0]
 print(f"maxCol:{max_value}")
-'''finalDf = (0 until maxCol).foldLeft(cleanedDf)
-{(df1, i) = > df1.withColumn(s
-"pin${i+1}", col("cleaned_array").getItem(i))}.drop("replaced_string", "cleaned_array");
-finalDf.select("id", "pin1", "pin2", "pin3")
-show();'''
+
+final_df = cleanedDf
+for i in range(max_value):
+    final_df = final_df.withColumn(f"pin{i+1}", coalesce(col("cleaned_array").getItem(i), lit("-")))
+
+# Drop unnecessary columns and print the result
+final_df.drop("add", "cleaned_array", "replaced_string").show(truncate=False)
+spark.stop()
