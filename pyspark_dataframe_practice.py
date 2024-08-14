@@ -1,8 +1,8 @@
 # Databricks notebook source
 import findspark
+
 findspark.init()
 from pyspark.shell import spark
-
 
 ''' Create a dataframe with following schema and sample data'''
 sampledata = [
@@ -55,3 +55,6 @@ df.withColumn("row", row_number().over(windowSpec)).withColumn("avg",
                                                                                                                       windowSpecAgg)).withColumn(
     "min", min(col("salary")).over(windowSpecAgg)).withColumn("max", max(col("salary")).over(windowSpecAgg)).where(
     col("row") == 1).select("department", "avg", "sum", "min", "max").show()
+
+# Stop spark at the end of your code is a best practice
+spark.stop()

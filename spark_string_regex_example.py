@@ -1,6 +1,6 @@
 # Databricks notebook source
 import findspark
-from pyspark.sql.functions import regexp_replace, split, trim, max, col, array_size, size, coalesce, lit
+from pyspark.sql.functions import regexp_replace, split, trim, col, array_size, size, coalesce, lit
 
 findspark.init()
 from pyspark.shell import spark
@@ -14,23 +14,27 @@ data = [
 ]
 schema = ["id", "add"]
 initial_df = spark.createDataFrame(data=data, schema=schema)
-'''Use regex_replace to first simplified your string'''
+'''Use regex_replace method to first simplified your string'''
 initial_df.show(truncate=False)
-df_replace_string = initial_df.withColumn("replaced_string",
+df_replace_string = initial_df.withColumn("formatted_string",
                                           (regexp_replace(trim(regexp_replace(initial_df["add"], "[^\\d]", " ")),
                                                           "\\s+", "#")))
 df_replace_string.show(truncate=False)
-cleanedDf = df_replace_string.withColumn("cleaned_array", split(col("replaced_string"), "#"))
+# Split formatted_string column to get all numbers as an array
+cleanedDf = df_replace_string.withColumn("array_list", split(col("formatted_string"), "#"))
 cleanedDf.show(truncate=False)
-size_df = cleanedDf.withColumn("size_a", array_size(col("cleaned_array")))
+size_df = cleanedDf.withColumn("size_a", array_size(col("array_list")))
 size_df.show()
-max_value = size_df.select(size(col("cleaned_array")).alias("size")).agg({"size": "max"}).collect()[0][0]
+# Get the largest array size from column array_list
+max_value = size_df.select(size(col("array_list")).alias("size")).agg({"size": "max"}).collect()[0][0]
 print(f"maxCol:{max_value}")
 
+# Generate pin columns dynamically , here I am replacing null values with -
 final_df = cleanedDf
 for i in range(max_value):
-    final_df = final_df.withColumn(f"pin{i+1}", coalesce(col("cleaned_array").getItem(i), lit("-")))
+    final_df = final_df.withColumn(f"pin{i + 1}", coalesce(col("array_list").getItem(i), lit("-")))
 
 # Drop unnecessary columns and print the result
-final_df.drop("add", "cleaned_array", "replaced_string").show(truncate=False)
+final_df.drop("add", "array_list", "formatted_string").show(truncate=False)
+# Stop spark as a good practice
 spark.stop()

@@ -1,5 +1,6 @@
 # Databricks notebook source
 import findspark
+
 findspark.init()
 ''' Purpose of this notebook to do hands on practice for Spark 3.4.0 which introduce an elegant way to write parameterized SQL.
 Paramterized sql is a secure way to avoid SQL injections
@@ -39,5 +40,9 @@ spark.sql("SELECT * FROM {df} WHERE {df[age]} > :num1 AND {df[age]} <= :num2 AND
 spark.sql("SELECT department, SUM(salary) AS total_salary FROM {df} GROUP BY {df[department]}", df=mydf).show()
 # Get total salary, min,max,avg,mean by department using parameterged sql
 spark.sql(
-    "SELECT department, SUM(salary) AS total_salary,MAX(salary) AS max_salary,MIN(salary) AS min_salary,MEAN(salary) AS mean_salary FROM {df} GROUP BY {df[department]}",
+    "SELECT department, SUM(salary) AS total_salary,MAX(salary) AS max_salary,MIN(salary) AS min_salary,MEAN(salary) "
+    "AS mean_salary FROM {df} GROUP BY {df[department]}",
     df=mydf).show()
+
+# Stop spark at the end of your code is a best practice
+spark.stop()

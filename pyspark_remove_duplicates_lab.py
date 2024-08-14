@@ -24,3 +24,6 @@ df.dropDuplicates(["department"]).show()
 print("Number of rows with distinct :  " + str(
     df.distinct().count()) + " AND with dropDuplicates using department column : " + str(
     df.dropDuplicates(["department"]).count()))
+
+# Stop spark at the end of your code is a best practice
+spark.stop()

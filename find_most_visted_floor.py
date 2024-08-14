@@ -13,6 +13,7 @@ A,3,1,CPU,DESKTOP
 B,3,2,DESKTOP,MONITOR
 '''
 import findspark
+
 findspark.init()
 from pyspark.shell import spark
 from pyspark.sql.window import Window
@@ -60,3 +61,6 @@ join1 = total_visitsDf.join(mostvisitedfloorDF, on="name", how="inner")
 join2 = join1.withColumnRenamed("floor", "most_visited_floor")
 finalDF = join2.join(stgDf, on="name", how="inner")
 finalDF.show()
+
+# Stop spark at the end of your code is a best practice
+spark.stop()
