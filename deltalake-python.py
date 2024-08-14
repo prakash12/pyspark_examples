@@ -251,7 +251,7 @@ broken_readings.createOrReplaceTempView("broken_readings")
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC  
+ 
 # MAGIC SELECT SUM(`count(heartrate)`) FROM broken_readings
 
 # COMMAND ----------
