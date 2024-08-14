@@ -1,0 +1,11 @@
+1.Inter_view_Question: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/4109818303427870/8173086679532827/latest.html
+
+2. python_deltalake: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/2122669513979827/8173086679532827/latest.html
+
+3. pyspark_dataframe: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/2948168728978853/8173086679532827/latest.html
+
+4. parameterized_sql: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/4309005316932694/8173086679532827/latest.html
+
+5. remove_duplicates: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/1666058506286874/8173086679532827/latest.html
+6. regex_replace: https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/4114441868727396/4481996937813346/8173086679532827/latest.html
+
